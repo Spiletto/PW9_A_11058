@@ -47,14 +47,14 @@ date_default_timezone_set('Asia/Jakarta');
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul></ul>
                 <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="buku">Buku Saya</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pinjam">Pinjam</a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="pinjam">Pinjam <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="kembalikan">Kembalikan</a>
@@ -103,34 +103,77 @@ date_default_timezone_set('Asia/Jakarta');
         <img class="d-block w-100"
         src="https://img.freepik.com/free-photo/abstract-blur-defocused-bookshelflibrary_1203-9640.jpg?w=900&t=st=1698697077~exp=1698697677~hmac=1a12d710da0136a68f348da615842a1d1f70266855cd129d10e3e012bf782d16" alt="First slide">
         <div class="carousel-caption">
-        <h1><span class="text-black">Selamat datang <b>{{Auth::user()->username }}</b></span></h1>
+        <div class="content-header">
+            <div class="container-fluid"> 
+                <div class="col-sm-15">
+                    <h4 class="m-0">Pinjam Buku</h4>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-15">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive p-0">
+                                    <table class="table table-hover textnowrap">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center">Judul Buku</th>
+                                                <th class="text-center">Penulis</th>
+                                                <th class="textcenter">Penerbit</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($buku as $index => $item)
+                                                @if ($item->status === 'Tersedia')
+                                                    <tr>
+                                                        <td class="text-center">{{ $index + 1 }}</td>
+                                                        <td class="text-center">{{ $item->judul }}</td>
+                                                        <td class="text-center">{{ $item->penulis }}</td>
+                                                        <td class="text-center">{{ $item->id_penerbit }}</td>
+                                                        <td class="text-center">
+                                                            <form onsubmit="return confirm('Apakah Anda yakin ingin meminjam buku ini?');" action="{{ route('pinjam.store', $item->id) }}" method="POST">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-sm btn-success">+</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center">
+                                                        <div class="alert alert-danger">
+                                                            Data Buku dengan status "Tersedia" belum tersedia
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                        
+                                </div>
+                                {{ $buku->links() }}
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col-md-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
         </div>
         </div>
-        <div class="carousel-item">
-        <img class="d-block w-100"
-        src="https://img.freepik.com/free-photo/abstract-blur-defocused-bookshelflibrary_1203-9639.jpg?w=900&t=st=1698697351~exp=1698697951~hmac=6d779c3e84460af609e92bf69eb2650f1c3ceee769b184938f8435ac54f841e5" alt="Second slide">
-        <div class="carousel-caption">
-        <h1><span class="text-black">Selamat datang <b>{{Auth::user()->username }}</b></span></h1>
         </div>
         </div>
-        <div class="carousel-item">
-        <img class="d-block w-100"
-        src="https://img.freepik.com/free-photo/abstract-blur-defocused-bookshelflibrary_1203-9642.jpg?w=900&t=st=1698697349~exp=1698697949~hmac=7088a9d4c117b844da9ad374e974e0e3a867a138cc5d3e6109560a2ee19040e3" alt="Third slide">
-        <div class="carousel-caption">
-        <h1><span class="text-black">Selamat datang <b>{{Auth::user()->username }}</b></span></h1>
-        </div>
-        </div>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators"
-        role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" ariahidden="true"></span>
-        <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators"
-        role="button" data-slide="next">
-        <span class="carousel-control-next-icon" ariahidden="true"></span>
-        <span class="sr-only">Next</span>
-        </a>
         </div>
         <!-- jQuery library -->
         <script
