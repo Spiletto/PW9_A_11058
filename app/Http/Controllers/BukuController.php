@@ -10,8 +10,8 @@ class BukuController extends Controller
 {
     public function index()
     {
-        $buku = Buku::paginate(5);
-
+        $userId = auth()->id();
+        $buku = Buku::where('id_penerbit', $userId)->paginate(5);
         return view('buku.index', compact('buku'));
     }
 
